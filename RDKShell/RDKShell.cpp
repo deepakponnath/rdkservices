@@ -3873,21 +3873,22 @@ namespace WPEFramework {
                 else
                 {
                     string xdgDir;
-                    int get_xdg_try_count = 0;
-                    int get_xdg_max_retry_count = 5;
-                    do
-                    {
-                        get_xdg_try_count++;
-                        std::cout<<"Get XDG_RUNTIME try number"<<get_xdg_try_count<<"\n";
-                        Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
-                        std::cout<<"XDG_RUNTIME_DIR-"<<xdgDir<<"\n";
-                        string displaySubdir = xdgDir + "/" + type;
-                        std::cout<<"XDG_RUNTIME_DIR+type-"<<displaySubdir<<"\n";
-                        Core::Directory(displaySubdir.c_str()).CreatePath();
 
-                        // don't add XDG_RUNTIME_DIR to display name
-                        displayName = type + "/" + "wst-" + callsign;
-                    }while(xdgDir.empty() && get_xdg_try_count < get_xdg_max_retry_count);
+                    Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
+                    std::cout<<"XDG_RUNTIME_DIR-"<<xdgDir<<"\n";
+                    if(xdgDir.empty())
+                    {
+                        std::cout<<"XDG_RUNTIME_DIR default settings"<<xdgDir<<"\n";
+                        xdgDir = "/run";
+                        std::cout<<"XDG_RUNTIME_DIR2 default value"<<xdgDir<<"\n";
+                    }
+                    string displaySubdir = xdgDir + "/" + type;
+                    std::cout<<"XDG_RUNTIME_DIR+type-"<<displaySubdir<<"\n";
+                    Core::Directory(displaySubdir.c_str()).CreatePath();
+
+                    // don't add XDG_RUNTIME_DIR to display name
+                    displayName = type + "/" + "wst-" + callsign;
+
                 }
 
                 if (gRdkShellSurfaceModeEnabled)
