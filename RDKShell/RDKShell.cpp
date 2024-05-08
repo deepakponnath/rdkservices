@@ -3873,12 +3873,21 @@ namespace WPEFramework {
                 else
                 {
                     string xdgDir;
-                    Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
-                    string displaySubdir = xdgDir + "/" + type;
-                    Core::Directory(displaySubdir.c_str()).CreatePath();
+                    int get_xdg_try_count = 0;
+                    int get_xdg_max_retry_count = 5;
+                    do
+                    {
+                        get_xdg_try_count++;
+                        std::cout<<"Get XDG_RUNTIME try number"<<get_xdg_try_count<<"\n";
+                        Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
+                        std::cout<<"XDG_RUNTIME_DIR-"<<xdgDir<<"\n";
+                        string displaySubdir = xdgDir + "/" + type;
+                        std::cout<<"XDG_RUNTIME_DIR+type-"<<displaySubdir<<"\n";
+                        Core::Directory(displaySubdir.c_str()).CreatePath();
 
-                    // don't add XDG_RUNTIME_DIR to display name
-                    displayName = type + "/" + "wst-" + callsign;
+                        // don't add XDG_RUNTIME_DIR to display name
+                        displayName = type + "/" + "wst-" + callsign;
+                    }while(xdgDir.empty() && get_xdg_try_count < get_xdg_max_retry_count);
                 }
 
                 if (gRdkShellSurfaceModeEnabled)
