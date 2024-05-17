@@ -3873,6 +3873,10 @@ namespace WPEFramework {
                 else
                 {
                     string xdgDir;
+                    extern char** environ;
+                    for (char** current = environ; *current; ++current) {
+                        std::cout << "XDG_RUNTIME_DIR Environment variable print"<<*current << std::endl;
+                    }
 
                     Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
                     std::cout<<"XDG_RUNTIME_DIR-"<<xdgDir<<"\n";
