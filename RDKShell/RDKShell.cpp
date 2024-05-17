@@ -3880,8 +3880,8 @@ namespace WPEFramework {
                     {
                         std::cout<<"XDG_RUNTIME_DIR default settings set env"<<xdgDir<<"\n";
                         Core::SystemInfo::SetEnvironment(_T("XDG_RUNTIME_DIR"), (_T("/run")));
-                        xdgDir = "/run";
-                        std::cout<<"XDG_RUNTIME_DIR2 default value"<<xdgDir<<"\n";
+                        Core::SystemInfo::GetEnvironment(_T("XDG_RUNTIME_DIR"), xdgDir);
+                        std::cout<<"XDG_RUNTIME_DIR2 after default setting"<<xdgDir<<"\n";
                     }
                     string displaySubdir = xdgDir + "/" + type;
                     std::cout<<"XDG_RUNTIME_DIR+type-"<<displaySubdir<<"\n";
